@@ -76,7 +76,7 @@ try {
           <h3>{p.title}</h3>
           <div class="context muted">{p.context}</div>
           <p class="desc">{p.description}</p>
-          <p class="outcome">{p.outcome}</p>
+          <p class="outcome">→ {p.outcome}</p>
           <div class="meta">
             {p.stack.map((s) => (
               <span class="tag">{s}</span>
@@ -90,27 +90,28 @@ try {
 
 <style>
   .desc {
-    font-size: 0.92rem;
-    margin: 0.4rem 0 0.7rem;
+    font-size: 0.9rem;
+    margin: 0.45rem 0 0.7rem;
+    line-height: 1.55;
   }
   .context {
-    font-size: 0.85rem;
-    font-weight: 500;
-    margin-top: 0.15rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.25rem;
   }
   .outcome {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     font-weight: 500;
     color: var(--accent);
-    border-left: 3px solid var(--accent-soft);
-    padding-left: 0.6rem;
-    margin: 0 0 0.7rem;
+    margin: 0 0 0.8rem;
   }
   .meta {
     display: flex;
     gap: 0.5rem;
     align-items: center;
     flex-wrap: wrap;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 </style>

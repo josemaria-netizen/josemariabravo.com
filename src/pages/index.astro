@@ -27,31 +27,83 @@ const personSchema = JSON.stringify({
     site.goodreadsProfileUrl,
   ].filter(Boolean),
 });
+
+const capabilities = [
+  {
+    idx: "A",
+    title: "Operations & finance leadership",
+    text: "Margin analysis, process redesign, exception handling, executive reporting.",
+  },
+  {
+    idx: "B",
+    title: "Data & product",
+    text: "Python, SQL, BI dashboards, AI-assisted workflows, end-to-end delivery.",
+  },
+  {
+    idx: "C",
+    title: "Strategy & business development",
+    text: "Market analysis, partnerships, commercial negotiation.",
+  },
+  {
+    idx: "D",
+    title: "Regulated environments",
+    text: "AML/CFT (CNBV/UIF), governance, discretion with confidential information.",
+  },
+];
 ---
 
 <Base title="José María Bravo — Operations & Finance × Product/Data">
   <script type="application/ld+json" set:html={personSchema} />
+
   <section class="hero">
-    <span class="badge">Open to opportunities</span>
-    <h1>{site.name}</h1>
-    <p class="tagline">{site.tagline}</p>
-    <p class="muted">
-      Operations &amp; Finance × Product/Data · Fintech, Payments &amp; FX ·
-      Founder &amp; GM · Bilingual EN/ES
-    </p>
-    <p class="muted locations">
-      {site.locations.join(" · ")} — Mexican &amp; Spanish (EU) citizen, no
-      sponsorship needed in Mexico or the EU.
-    </p>
-    <div class="cta">
-      <a class="button primary" href={`mailto:${site.email}`}>Get in touch</a>
-      <a class="button" href="/cv.pdf">Download CV</a>
+    <div class="hero-main">
+      <span class="badge">Open to opportunities</span>
+      <h1>José María<br />Bravo<br />Quintana</h1>
+      <p class="tagline">
+        I build the systems a business runs on — and I run the business too.
+      </p>
     </div>
+    <aside class="hero-facts">
+      <div>
+        <div class="label">Focus</div>
+        <div class="fact">
+          Operations &amp; Finance × Product/Data — Fintech, Payments &amp; FX
+        </div>
+      </div>
+      <div>
+        <div class="label">Locations</div>
+        <div class="fact">CDMX · Madrid · London · NYC · Chicago</div>
+      </div>
+      <div>
+        <div class="label">Citizenship</div>
+        <div class="fact">Mexican + Spanish (EU) — no EU sponsorship needed</div>
+      </div>
+      <div>
+        <div class="label">Languages</div>
+        <div class="fact">Spanish (native) · English (native)</div>
+      </div>
+      <div class="cta">
+        <a class="button primary" href={`mailto:${site.email}`}>Get in touch</a>
+        <a class="button" href="/cv.pdf">CV ↓</a>
+      </div>
+    </aside>
+  </section>
+
+  <section class="capabilities">
+    {
+      capabilities.map((c) => (
+        <div class="cap">
+          <div class="cap-idx">{c.idx}</div>
+          <h3>{c.title}</h3>
+          <p class="muted small">{c.text}</p>
+        </div>
+      ))
+    }
   </section>
 
   <section>
-    <h2>What I do</h2>
-    <p>
+    <h2>About</h2>
+    <p class="about">
       I'm an operator with a builder's toolkit. At a cross-border FX and
       money-transmission company I lead operations and finance while also
       designing and shipping the data, product, and compliance stack: the
@@ -60,50 +112,22 @@ const personSchema = JSON.stringify({
       <strong>ALCOBA</strong>, a real-estate management company with a portfolio
       of owned units plus 18 apartments under management.
     </p>
-    <div class="grid two">
-      <div class="card">
-        <h3>Operations &amp; finance leadership</h3>
-        <p class="muted small">
-          Margin analysis, process redesign, exception handling, executive
-          reporting.
-        </p>
-      </div>
-      <div class="card">
-        <h3>Data &amp; product</h3>
-        <p class="muted small">
-          Python, SQL, BI dashboards, AI-assisted workflows, end-to-end
-          delivery.
-        </p>
-      </div>
-      <div class="card">
-        <h3>Strategy &amp; business development</h3>
-        <p class="muted small">
-          Market analysis, partnerships, commercial negotiation.
-        </p>
-      </div>
-      <div class="card">
-        <h3>Regulated environments</h3>
-        <p class="muted small">
-          AML/CFT (CNBV/UIF), governance, discretion with confidential
-          information.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Explore</h2>
     <ul class="explore">
       <li>
-        <a href="/experience/">Experience</a> — engineering → energy → sales →
-        founding a company → fintech.
+        <a href="/experience/"><span class="idx">01</span>Experience</a>
+        <span class="muted">
+          — engineering → energy → sales → founding a company → fintech.</span
+        >
       </li>
       <li>
-        <a href="/projects/">Projects</a> — public code and the professional
-        systems I've built.
+        <a href="/projects/"><span class="idx">02</span>Projects</a>
+        <span class="muted">
+          — public code and the professional systems I've built.</span
+        >
       </li>
       <li>
-        <a href="/reading/">Reading</a> — what's on my shelf.
+        <a href="/reading/"><span class="idx">03</span>Reading</a>
+        <span class="muted"> — what's on my shelf.</span>
       </li>
     </ul>
   </section>
@@ -123,52 +147,122 @@ const personSchema = JSON.stringify({
 
 <style>
   .hero {
-    padding: 1.5rem 0 0.5rem;
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 3rem;
+    padding: 2rem 0 3rem;
   }
-  .hero .badge {
-    margin-bottom: 0.9rem;
+  .hero-main .badge {
+    margin-bottom: 2rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.6rem, 7vw, 5.1rem);
+    line-height: 0.98;
+    margin-bottom: 1.6rem;
   }
   .tagline {
     font-size: 1.25rem;
     font-weight: 500;
-    margin: 0.75rem 0 0.5rem;
+    line-height: 1.45;
+    max-width: 34rem;
+    margin: 0;
   }
-  .locations {
-    font-size: 0.92rem;
+  .hero-facts {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    border-left: 1px solid var(--rule);
+    padding-left: 2rem;
+    padding-top: 0.5rem;
+  }
+  .fact {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 0.2rem;
   }
   .cta {
     display: flex;
     gap: 0.75rem;
-    margin-top: 1.25rem;
+    margin-top: 0.5rem;
     flex-wrap: wrap;
   }
-  .button {
-    display: inline-block;
-    padding: 0.55rem 1.1rem;
-    border-radius: 8px;
-    border: 1px solid var(--border);
+  .capabilities {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--rule);
+  }
+  .cap {
+    padding: 1.6rem 1.4rem 1.8rem 0;
+    border-right: 1px solid var(--hairline);
+    padding-left: 1.4rem;
+  }
+  .cap:first-child {
+    padding-left: 0;
+  }
+  .cap:last-child {
+    border-right: none;
+  }
+  .cap-idx {
+    font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin-bottom: 0.7rem;
+  }
+  .cap h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.35rem;
+    font-family: "Archivo", "Helvetica Neue", sans-serif;
     font-weight: 600;
-    font-size: 0.92rem;
-    color: var(--text);
-    background: var(--bg-raised);
-  }
-  .button.primary {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
-  .button:hover {
-    text-decoration: none;
-    filter: brightness(1.05);
   }
   .small {
-    font-size: 0.9rem;
+    font-size: 0.82rem;
+    line-height: 1.55;
     margin-bottom: 0;
+  }
+  .about {
+    max-width: 46rem;
   }
   .explore {
     list-style: none;
+    margin-top: 1.5rem;
   }
   .explore li {
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.7rem;
+  }
+  .explore a {
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+  }
+  .explore .idx {
+    color: var(--muted);
+    margin-right: 0.5rem;
+    font-weight: 500;
+  }
+
+  @media (max-width: 760px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .hero-facts {
+      border-left: none;
+      border-top: 1px solid var(--rule);
+      padding-left: 0;
+      padding-top: 1.5rem;
+    }
+    .capabilities {
+      grid-template-columns: 1fr;
+    }
+    .cap {
+      border-right: none;
+      border-bottom: 1px solid var(--hairline);
+      padding-left: 0;
+    }
+    .cap:last-child {
+      border-bottom: none;
+    }
   }
 </style>

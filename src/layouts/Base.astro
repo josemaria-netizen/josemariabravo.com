@@ -13,10 +13,10 @@ const desc =
   "José María Bravo Quintana — Operations & Finance in fintech, payments & FX. Builder of dashboards, compliance engines, and the systems a business runs on.";
 
 const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/experience/", label: "Experience" },
-  { href: "/projects/", label: "Projects" },
-  { href: "/reading/", label: "Reading" },
+  { href: "/", label: "Home", idx: "" },
+  { href: "/experience/", label: "Experience", idx: "01" },
+  { href: "/projects/", label: "Projects", idx: "02" },
+  { href: "/reading/", label: "Reading", idx: "03" },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -38,7 +38,7 @@ const ogImage = new URL("/og.png", Astro.site);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Archivo:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="canonical" href={canonical} />
@@ -56,7 +56,7 @@ const ogImage = new URL("/og.png", Astro.site);
   <body>
     <header class="site-header">
       <div class="inner">
-        <a class="brand" href="/">{site.shortName}</a>
+        <a class="brand" href="/">JMB</a>
         <nav>
           {
             navItems.map((item) => (
@@ -64,6 +64,7 @@ const ogImage = new URL("/og.png", Astro.site);
                 href={item.href}
                 aria-current={isCurrent(item.href) ? "page" : undefined}
               >
+                {item.idx && <span class="idx">{item.idx}</span>}
                 {item.label}
               </a>
             ))
@@ -75,6 +76,7 @@ const ogImage = new URL("/og.png", Astro.site);
       <slot />
     </main>
     <footer class="site-footer">
+      <div class="copy">© {new Date().getFullYear()} {site.name}</div>
       <div class="links">
         <a href={`mailto:${site.email}`}>Email</a>
         <a href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a>
@@ -83,7 +85,6 @@ const ogImage = new URL("/og.png", Astro.site);
         >
         <a href="/cv.pdf">CV (PDF)</a>
       </div>
-      <div>© {new Date().getFullYear()} {site.name}</div>
     </footer>
   </body>
 </html>
