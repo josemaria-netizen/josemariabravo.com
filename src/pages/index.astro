@@ -1,9 +1,36 @@
 ---
 import Base from "../layouts/Base.astro";
 import { site } from "../config";
+
+const personSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  alternateName: "José María Bravo",
+  url: "https://josemariabravo.com",
+  email: `mailto:${site.email}`,
+  jobTitle: "Operations & Finance — Fintech, Payments & FX",
+  nationality: ["Mexican", "Spanish"],
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Mexico City",
+    addressCountry: "MX",
+  },
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Universidad Anáhuac",
+  },
+  knowsLanguage: ["es", "en"],
+  sameAs: [
+    site.linkedin,
+    `https://github.com/${site.github}`,
+    site.goodreadsProfileUrl,
+  ].filter(Boolean),
+});
 ---
 
 <Base title="José María Bravo — Operations & Finance × Product/Data">
+  <script type="application/ld+json" set:html={personSchema} />
   <section class="hero">
     <span class="badge">Open to opportunities</span>
     <h1>{site.name}</h1>

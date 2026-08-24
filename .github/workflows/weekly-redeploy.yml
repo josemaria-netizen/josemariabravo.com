@@ -1,0 +1,25 @@
+# Triggers a fresh Vercel build weekly so build-time content
+# (Goodreads shelves, GitHub repo list) stays current without a code push.
+# Requires the VERCEL_DEPLOY_HOOK repo secret: create a Deploy Hook in
+# Vercel (Project → Settings → Git → Deploy Hooks) and store its URL as
+# the secret. The job no-ops harmlessly until the secret exists.
+name: Weekly redeploy
+
+on:
+  schedule:
+    - cron: "0 12 * * 1" # Mondays 12:00 UTC
+  workflow_dispatch:
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel deploy hook
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "VERCEL_DEPLOY_HOOK secret not set — skipping."
+            exit 0
+          fi
+          curl -sf -X POST "$HOOK"
