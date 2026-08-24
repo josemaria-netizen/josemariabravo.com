@@ -1,0 +1,165 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../config";
+import { books as fallbackBooks } from "../data/books";
+
+interface ShelfBook {
+  title: string;
+  author: string;
+  imageUrl: string | null;
+  link: string | null;
+  current: boolean;
+}
+
+// Goodreads shut down its public API, but per-shelf RSS feeds still work.
+// Fetched at build time when goodreadsUserId is set in src/config.ts.
+function parseShelfRss(xml: string, current: boolean): ShelfBook[] {
+  const items = xml.match(/<item>[\s\S]*?<\/item>/g) ?? [];
+  return items.map((item) => {
+    const pick = (tag: string) => {
+      const m = item.match(
+        new RegExp(`<${tag}>(?:<!\\[CDATA\\[)?([\\s\\S]*?)(?:\\]\\]>)?<\\/${tag}>`)
+      );
+      return m ? m[1].trim() : null;
+    };
+    return {
+      title: pick("title") ?? "Untitled",
+      author: pick("author_name") ?? "Unknown",
+      imageUrl: pick("book_medium_image_url") ?? pick("book_image_url"),
+      link: pick("link"),
+      current,
+    };
+  });
+}
+
+let shelfBooks: ShelfBook[] = [];
+if (site.goodreadsUserId) {
+  try {
+    const shelves: Array<[string, boolean]> = [
+      ["currently-reading", true],
+      ["read", false],
+    ];
+    for (const [shelf, current] of shelves) {
+      const res = await fetch(
+        `https://www.goodreads.com/review/list_rss/${site.goodreadsUserId}?shelf=${shelf}`
+      );
+      if (res.ok) shelfBooks.push(...parseShelfRss(await res.text(), current));
+    }
+  } catch {
+    // Fall through to the hand-maintained list.
+  }
+}
+
+const usingGoodreads = shelfBooks.length > 0;
+const currentBooks = usingGoodreads
+  ? shelfBooks.filter((b) => b.current)
+  : fallbackBooks.filter((b) => b.current);
+const readBooks = usingGoodreads
+  ? shelfBooks.filter((b) => !b.current)
+  : fallbackBooks.filter((b) => !b.current);
+---
+
+<Base title="Reading — José María Bravo">
+  <h1>Reading</h1>
+  <p class="muted">
+    What's on my shelf.{" "}
+    {
+      site.goodreadsProfileUrl && (
+        <>
+          Follow along on{" "}
+          <a href={site.goodreadsProfileUrl} target="_blank" rel="noopener">
+            Goodreads
+          </a>
+          .
+        </>
+      )
+    }
+  </p>
+
+  {
+    currentBooks.length > 0 && (
+      <>
+        <h2>Currently reading</h2>
+        <ul class="books">
+          {currentBooks.map((b) => (
+            <li class="card book">
+              {"imageUrl" in b && b.imageUrl && (
+                <img src={b.imageUrl} alt="" loading="lazy" />
+              )}
+              <div>
+                <h3>
+                  {"link" in b && b.link ? (
+                    <a href={b.link} target="_blank" rel="noopener">
+                      {b.title}
+                    </a>
+                  ) : (
+                    b.title
+                  )}
+                </h3>
+                <div class="muted author">{b.author}</div>
+                {"note" in b && b.note && <p class="note">{b.note}</p>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+
+  <h2>Read</h2>
+  {
+    readBooks.length > 0 ? (
+      <ul class="books">
+        {readBooks.map((b) => (
+          <li class="card book">
+            {"imageUrl" in b && b.imageUrl && (
+              <img src={b.imageUrl} alt="" loading="lazy" />
+            )}
+            <div>
+              <h3>
+                {"link" in b && b.link ? (
+                  <a href={b.link} target="_blank" rel="noopener">
+                    {b.title}
+                  </a>
+                ) : (
+                  b.title
+                )}
+              </h3>
+              <div class="muted author">{b.author}</div>
+              {"note" in b && b.note && <p class="note">{b.note}</p>}
+            </div>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="muted">List coming soon.</p>
+    )
+  }
+</Base>
+
+<style>
+  .books {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    margin-top: 0.5rem;
+  }
+  .book {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .book img {
+    width: 52px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .author {
+    font-size: 0.88rem;
+  }
+  .note {
+    font-size: 0.9rem;
+    margin: 0.35rem 0 0;
+  }
+</style>

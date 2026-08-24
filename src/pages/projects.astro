@@ -1,0 +1,107 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../config";
+import { professionalBuilds } from "../data/projects";
+
+interface Repo {
+  name: string;
+  html_url: string;
+  description: string | null;
+  language: string | null;
+  stargazers_count: number;
+  homepage: string | null;
+  fork: boolean;
+}
+
+// Fetched at build time — redeploying refreshes the list.
+let repos: Repo[] = [];
+try {
+  const res = await fetch(
+    `https://api.github.com/users/${site.github}/repos?per_page=100&sort=updated`
+  );
+  if (res.ok) {
+    repos = ((await res.json()) as Repo[]).filter((r) => !r.fork);
+  }
+} catch {
+  // Build proceeds without the public-repo section rather than failing.
+}
+---
+
+<Base title="Projects — José María Bravo">
+  <h1>Projects</h1>
+  <p class="muted">
+    Two kinds of work: public code you can read, and professional systems built
+    inside companies — described here without confidential detail.
+  </p>
+
+  <h2>Public code</h2>
+  {
+    repos.length > 0 ? (
+      <div class="grid two">
+        {repos.map((repo) => (
+          <div class="card">
+            <h3>
+              <a href={repo.html_url} target="_blank" rel="noopener">
+                {repo.name}
+              </a>
+            </h3>
+            {repo.description && <p class="desc muted">{repo.description}</p>}
+            <div class="meta">
+              {repo.language && <span class="tag">{repo.language}</span>}
+              {repo.homepage && (
+                <a href={repo.homepage} target="_blank" rel="noopener">
+                  Live app ↗
+                </a>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <p class="muted">
+        See{" "}
+        <a href={`https://github.com/${site.github}`} target="_blank" rel="noopener">
+          github.com/{site.github}
+        </a>
+        .
+      </p>
+    )
+  }
+
+  <h2>Professional builds</h2>
+  <div class="grid">
+    {
+      professionalBuilds.map((p) => (
+        <div class="card">
+          <h3>{p.title}</h3>
+          <div class="context muted">{p.context}</div>
+          <p class="desc">{p.description}</p>
+          <div class="meta">
+            {p.stack.map((s) => (
+              <span class="tag">{s}</span>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</Base>
+
+<style>
+  .desc {
+    font-size: 0.92rem;
+    margin: 0.4rem 0 0.7rem;
+  }
+  .context {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 0.15rem;
+  }
+  .meta {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+  }
+</style>

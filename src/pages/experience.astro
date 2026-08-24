@@ -1,0 +1,93 @@
+---
+import Base from "../layouts/Base.astro";
+import { roles, education } from "../data/experience";
+---
+
+<Base title="Experience — José María Bravo">
+  <h1>Experience</h1>
+  <p class="muted">
+    Engineering → energy → sales → founding a company → fintech. That path is
+    why I'm comfortable taking ownership of ambiguous problems and turning them
+    into working systems.
+  </p>
+
+  <div class="timeline">
+    {
+      roles.map((role) => (
+        <article class="entry">
+          <div class="entry-head">
+            <h3>{role.company}</h3>
+            <span class="muted period">{role.period}</span>
+          </div>
+          <div class="title">{role.title} · <span class="muted">{role.location}</span></div>
+          {role.summary && <p class="summary muted">{role.summary}</p>}
+          <ul>
+            {role.bullets.map((b) => (
+              <li>{b}</li>
+            ))}
+          </ul>
+        </article>
+      ))
+    }
+  </div>
+
+  <h2>Education &amp; certifications</h2>
+  <div class="timeline">
+    {
+      education.map((e) => (
+        <article class="entry">
+          <div class="entry-head">
+            <h3>{e.school}</h3>
+            <span class="muted period">{e.period}</span>
+          </div>
+          <div class="title">{e.degree}</div>
+          {e.note && <p class="summary muted">{e.note}</p>}
+        </article>
+      ))
+    }
+  </div>
+
+  <p style="margin-top: 2rem;">
+    Prefer a document? <a href="/cv.pdf">Download my CV as a PDF</a>.
+  </p>
+</Base>
+
+<style>
+  .timeline {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+  .entry {
+    border-left: 3px solid var(--accent-soft);
+    padding-left: 1.25rem;
+  }
+  .entry-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .period {
+    font-size: 0.88rem;
+    white-space: nowrap;
+  }
+  .title {
+    font-weight: 500;
+    margin: 0.15rem 0 0.4rem;
+    font-size: 0.95rem;
+  }
+  .summary {
+    font-size: 0.92rem;
+    margin-bottom: 0.4rem;
+  }
+  ul {
+    padding-left: 1.15rem;
+    font-size: 0.94rem;
+  }
+  li {
+    margin-bottom: 0.35rem;
+  }
+</style>

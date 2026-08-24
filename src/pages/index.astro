@@ -1,0 +1,147 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../config";
+---
+
+<Base title="José María Bravo — Operations & Finance × Product/Data">
+  <section class="hero">
+    <span class="badge">Open to opportunities</span>
+    <h1>{site.name}</h1>
+    <p class="tagline">{site.tagline}</p>
+    <p class="muted">
+      Operations &amp; Finance × Product/Data · Fintech, Payments &amp; FX ·
+      Founder &amp; GM · Bilingual EN/ES
+    </p>
+    <p class="muted locations">
+      {site.locations.join(" · ")} — Mexican &amp; Spanish (EU) citizen, no
+      sponsorship needed in Mexico or the EU.
+    </p>
+    <div class="cta">
+      <a class="button primary" href={`mailto:${site.email}`}>Get in touch</a>
+      <a class="button" href="/cv.pdf">Download CV</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>What I do</h2>
+    <p>
+      I'm an operator with a builder's toolkit. At a cross-border FX and
+      money-transmission company I lead operations and finance while also
+      designing and shipping the data, product, and compliance stack: the
+      analytics leadership runs on, an automated AML/CFT monitoring engine, and
+      a governed knowledge base. In parallel, I founded and run
+      <strong>ALCOBA</strong>, a real-estate management company with a portfolio
+      of owned units plus 18 apartments under management.
+    </p>
+    <div class="grid two">
+      <div class="card">
+        <h3>Operations &amp; finance leadership</h3>
+        <p class="muted small">
+          Margin analysis, process redesign, exception handling, executive
+          reporting.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Data &amp; product</h3>
+        <p class="muted small">
+          Python, SQL, BI dashboards, AI-assisted workflows, end-to-end
+          delivery.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Strategy &amp; business development</h3>
+        <p class="muted small">
+          Market analysis, partnerships, commercial negotiation.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Regulated environments</h3>
+        <p class="muted small">
+          AML/CFT (CNBV/UIF), governance, discretion with confidential
+          information.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Explore</h2>
+    <ul class="explore">
+      <li>
+        <a href="/experience/">Experience</a> — engineering → energy → sales →
+        founding a company → fintech.
+      </li>
+      <li>
+        <a href="/projects/">Projects</a> — public code and the professional
+        systems I've built.
+      </li>
+      <li>
+        <a href="/reading/">Reading</a> — what's on my shelf.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Contact</h2>
+    <p>
+      The fastest way to reach me is email:
+      <a href={`mailto:${site.email}`}>{site.email}</a>. I'm also on
+      <a href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a> and
+      <a href={`https://github.com/${site.github}`} target="_blank" rel="noopener"
+        >GitHub</a
+      >.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding: 1.5rem 0 0.5rem;
+  }
+  .hero .badge {
+    margin-bottom: 0.9rem;
+  }
+  .tagline {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin: 0.75rem 0 0.5rem;
+  }
+  .locations {
+    font-size: 0.92rem;
+  }
+  .cta {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .button {
+    display: inline-block;
+    padding: 0.55rem 1.1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--text);
+    background: var(--bg-raised);
+  }
+  .button.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .button:hover {
+    text-decoration: none;
+    filter: brightness(1.05);
+  }
+  .small {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+  .explore {
+    list-style: none;
+  }
+  .explore li {
+    margin-bottom: 0.6rem;
+  }
+</style>
