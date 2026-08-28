@@ -10,6 +10,7 @@ const personSchema = JSON.stringify({
   url: "https://josemariabravo.com",
   email: `mailto:${site.email}`,
   jobTitle: "Operations & Finance — Fintech, Payments & FX",
+  image: "https://josemariabravo.com/headshot.jpg",
   nationality: ["Mexican", "Spanish"],
   address: {
     "@type": "PostalAddress",
@@ -64,6 +65,13 @@ const capabilities = [
       </p>
     </div>
     <aside class="hero-facts">
+      <img
+        class="headshot"
+        src="/headshot.jpg"
+        alt="Portrait of José María Bravo Quintana"
+        width="576"
+        height="720"
+      />
       <div>
         <div class="label">Focus</div>
         <div class="fact">
@@ -179,6 +187,13 @@ const capabilities = [
     font-size: 0.9rem;
     font-weight: 500;
     margin-top: 0.2rem;
+  }
+  .headshot {
+    width: 100%;
+    max-width: 260px;
+    height: auto;
+    display: block;
+    border: 1px solid var(--rule);
   }
   .cta {
     display: flex;
